@@ -5,7 +5,6 @@ import java.util.Arrays;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -14,10 +13,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class Cesar extends Pane{
+public class Cesar extends Pane {
     private final ArrayList<Character> alphabet = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'));
+    private Stage primaryStage; 
 
-    public Cesar() {
+
+    public Cesar(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         this.display();
     }
 
@@ -62,25 +64,33 @@ public class Cesar extends Pane{
         resultText.setLayoutX(50);
         resultText.setLayoutY(130);
 
-        this.getChildren().addAll(text, textField, button, comboBox,label, slider, result, resultText);
+        Button backButton = new Button("Back to Menu");
+        backButton.setLayoutX(300);
+        backButton.setLayoutY(40);
+
+        backButton.setOnAction(e -> {
+            Menu menu = new Menu();
+            menu.show(primaryStage); 
+            primaryStage.setScene(menu.getScene()); 
+        });
+
+
+        this.getChildren().addAll(text, textField, button, comboBox, label, slider, result, resultText,backButton);
 
         button.setOnAction(e -> {
-            if(comboBox.getValue() == null || textField.getText().isEmpty()){
-                Alert alert = new Alert(AlertType.INFORMATION);
+            if (comboBox.getValue() == null || textField.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Error: Please fill all the fields");
                 alert.showAndWait();
-            }
-            else if(!isValidInput(textField.getText())) {
-                Alert alert = new Alert(AlertType.INFORMATION);
+            } else if (!isValidInput(textField.getText())) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("Error: Please enter only alphabetic characters");
                 alert.showAndWait();
-            }
-            else{
+            } else {
                 resultText.setText(Encrypt_And_Decrypt(comboBox.getValue(), textField.getText(), slider.valueProperty().intValue()));
             }
         });
     }
-
 
     public void show(Stage primaryStage) {
         Scene scene = new Scene(this, 400, 300);
