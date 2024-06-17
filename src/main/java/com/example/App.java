@@ -1,12 +1,9 @@
 package com.example;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 /**
  * JavaFX App
@@ -14,17 +11,16 @@ import java.io.IOException;
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("primary.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("JavaFX App");
-        stage.show();
+    public void start(Stage primaryStage) {
+        Label label = new Label("Hello, JavaFX!");
+        Scene scene = new Scene(label, 400, 200);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("JavaFX on VS Code");
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        launch();
-    }
+        launch(args);
+    }    
 
 }
