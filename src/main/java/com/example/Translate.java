@@ -1,98 +1,7 @@
 package com.example;
 
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
-import javafx.stage.Stage;
-
-public class Translate extends FlowPane {
-    private Stage primaryStage;
-
-    public Translate(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.display();
-    }
-
-    public void show(Stage primaryStage) {
-        Scene scene = new Scene(this, 400, 300);
-        primaryStage.setResizable(false);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Encryption Cesar Cipher");
-        primaryStage.show();
-    }
-
-    public void display(){
-        Label label = new Label("Sentence to translate :");
-        this.getChildren().add(label);        
-        label.setStyle("-fx-padding: 0 10 0 0;");
-
-        TextField text = new TextField("nom");
-        this.getChildren().add(text);
-
-        Label cheat = new Label("");
-        this.getChildren().add(cheat);        
-        cheat.setStyle("-fx-padding: 15px;");
-
-        Button button = new Button("Translate");
-        this.getChildren().add(button);
-
-        Label inputLabel = new Label("Input mode :");
-        this.getChildren().add(inputLabel);        
-        inputLabel.setStyle("-fx-padding: 0 10 0 0;");
-
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
-        choiceBox.setValue("Text");
-        this.getChildren().add(choiceBox);
-
-        Label cheat2 = new Label("");
-        this.getChildren().add(cheat2);        
-        cheat2.setStyle("-fx-padding: 0 200 0 0;");
-
-        Label translateLabel = new Label("Translate mode :");
-        this.getChildren().add(translateLabel);        
-        translateLabel.setStyle("-fx-padding: 0 10 0 0;");
-
-        ChoiceBox<String> choiceBox2 = new ChoiceBox<>();
-        choiceBox2.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
-        choiceBox2.setValue("Text");
-        this.getChildren().add(choiceBox2);
-
-        Label cheat3 = new Label("");
-        this.getChildren().add(cheat3);        
-        cheat3.setStyle("-fx-padding: 0 180 0 0;");
-
-        Label answer = new Label("sdfgzedrf");
-        this.getChildren().add(answer);        
-        answer.setStyle("-fx-top: 60vh;");
-
-        Button backButton = new Button("Back to Menu");
-        this.getChildren().add(backButton);
-        backButton.setStyle("-fx-padding: 0 0 0 10;");
-
-        backButton.setOnAction(e -> {
-            Menu menu = new Menu();
-            menu.show(primaryStage); 
-            primaryStage.setScene(menu.getScene()); 
-        });
-
-        
-        button.setOnAction(event -> {
-            String translatedText = textTranslate(text.getText(), choiceBox.getValue(), choiceBox2.getValue());
-            if (translatedText != "&"){
-                answer.setText(translatedText);
-            }
-            else if (translatedText == "&"){
-                answer.setText("Error : input doesn't match mode selected");
-            }
-        });
-        
-    }
-
-    private String textTranslate(String text, String input, String translate){
+public class Translate {
+    public String textTranslate(String text, String input, String translate){
         String answer = "";
 
         if (!verify(text, input, translate)){
@@ -164,7 +73,7 @@ public class Translate extends FlowPane {
         return answer;
     }
 
-    private boolean verify(String text, String input, String translate){
+    public boolean verify(String text, String input, String translate){
         boolean b = true;
         if (input == "Text"){
             for (int i = 0; i < text.length(); i++) {
@@ -250,7 +159,7 @@ public class Translate extends FlowPane {
         return b;
     }
 
-    private String textToHexa(String input){
+    public String textToHexa(String input){
         byte[] buf = input.getBytes();
         char[] chars = new char[3 * buf.length];
         char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
@@ -263,7 +172,7 @@ public class Translate extends FlowPane {
         return new String(chars);
     }
 
-    private String textToDeci(String text){
+    public String textToDeci(String text){
         String s = "";
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
@@ -273,7 +182,7 @@ public class Translate extends FlowPane {
         return s;
     }
 
-    private String textToOcta(String text){
+    public String textToOcta(String text){
         String str = text;
         String toOctal ="";
         for(char c : str.toCharArray()){
@@ -282,7 +191,7 @@ public class Translate extends FlowPane {
         return toOctal;
     }
 
-    private String textToBina(String text){
+    public String textToBina(String text){
         String str = text;
         String result = "";
         char[] messChar = str.toCharArray();
@@ -294,7 +203,7 @@ public class Translate extends FlowPane {
         return result;
     }
 
-    private String hexaToText(String text){
+    public String hexaToText(String text){
         String n = "";
         String answer = "";
         for (int i = 0; i < text.length(); i++) {
@@ -312,7 +221,7 @@ public class Translate extends FlowPane {
         return answer;
     }
 
-    private String unHex(String arg) {        
+    public String unHex(String arg) {        
 
         String str = "";
         for(int i=0;i<arg.length();i+=2)
@@ -324,7 +233,7 @@ public class Translate extends FlowPane {
         return str;
     }
 
-    private String deciToText(String text){
+    public String deciToText(String text){
         String n = "";
         String answer = "";
         for (int i = 0; i < text.length(); i++) {
@@ -342,7 +251,7 @@ public class Translate extends FlowPane {
         return answer;
     }
 
-    private String unDeci(String arg) {        
+    public String unDeci(String arg) {        
 
         String str = "";
         for(int i=0;i<arg.length();i+=3)
@@ -354,7 +263,7 @@ public class Translate extends FlowPane {
         return str;
     }
 
-    private String octaToText(String text){
+    public String octaToText(String text){
         String n = "";
         String answer = "";
         for (int i = 0; i < text.length(); i++) {
@@ -372,7 +281,7 @@ public class Translate extends FlowPane {
         return answer;
     }
 
-    private String unOcta(String arg) {        
+    public String unOcta(String arg) {        
 
         String str = "";
         for(int i=0;i<arg.length();i+=3)
@@ -384,7 +293,7 @@ public class Translate extends FlowPane {
         return str;
     }
 
-    private String binaToText(String text){
+    public String binaToText(String text){
         String n = "";
         String answer = "";
         for (int i = 0; i < text.length(); i++) {
@@ -402,7 +311,7 @@ public class Translate extends FlowPane {
         return answer;
     }
 
-    private String unBina(String arg) {        
+    public String unBina(String arg) {        
 
         String str = "";
         for(int i=0;i<arg.length();i+=8)
@@ -414,7 +323,7 @@ public class Translate extends FlowPane {
         return str;
     }
 
-    private String hexaToDeci(String text){
+    public String hexaToDeci(String text){
         int n = 0;
         for (int i = text.length()-1; i >= 0; i--) {
             char c = text.charAt(i);
@@ -445,7 +354,7 @@ public class Translate extends FlowPane {
         return n + "";
     }
 
-    private String octaToDeci(String text){
+    public String octaToDeci(String text){
         String s = "";
         int n = -1;
         for (int i = 0; i < text.length(); i++){
@@ -470,7 +379,7 @@ public class Translate extends FlowPane {
         return s;
     }
 
-    private int getDecimal(int octal){    
+    public int getDecimal(int octal){    
         //Declaring variable to store decimal number  
         int decimal = 0;    
         //Declaring variable to use in power  
@@ -489,7 +398,7 @@ public class Translate extends FlowPane {
         return decimal;    
     }
 
-    private String binaToDeci(String text){
+    public String binaToDeci(String text){
         int n = 0;
         for (int i = text.length()-1; i >= 0; i--) {
             char c = text.charAt(i);
@@ -499,7 +408,7 @@ public class Translate extends FlowPane {
         return String.valueOf(n);
     }
 
-    private String deciToHexa(String text){
+    public String deciToHexa(String text){
         String s = "";
         int n = -1;
         for (int i = 0; i < text.length(); i++){
@@ -537,7 +446,7 @@ public class Translate extends FlowPane {
         return hex;  
     }
 
-    private String deciToOcta(String text){
+    public String deciToOcta(String text){
         String s = "";
         int n = -1;
         for (int i = 0; i < text.length(); i++){
@@ -562,7 +471,7 @@ public class Translate extends FlowPane {
         return s;
     }
 
-    private String toOctal(int decimal){    
+    public String toOctal(int decimal){    
         int rem; //declaring variable to store remainder  
         String octal=""; //declareing variable to store octal  
         //declaring array of octal numbers  
@@ -577,7 +486,7 @@ public class Translate extends FlowPane {
         return octal;  
     }
 
-    private String deciToBina(String text){
+    public String deciToBina(String text){
         String s = "";
         int n = -1;
         for (int i = text.length()-1; i >= 0 ; i--){
