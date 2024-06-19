@@ -1,4 +1,8 @@
+com\example\CesarAndTranslateScreen.class
+com\example\Cesar.class
 com\example\Menu.class
 module-info.class
 com\example\Translate.class
+com\example\TranslateScreen.class
 com\example\App.class
+com\example\CesarScreen.class
