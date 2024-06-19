@@ -47,11 +47,11 @@ public class Menu extends Pane {
         this.getChildren().add(quitButton);
 
         ASCIIButton.setOnAction(e -> {
-            Translate translate = new Translate((Stage) this.getScene().getWindow());
+            TranslateScreen translate = new TranslateScreen((Stage) this.getScene().getWindow());
             translate.show((Stage) this.getScene().getWindow()); 
         });
         cesarButton.setOnAction(e -> {
-            Cesar cesar = new Cesar((Stage) this.getScene().getWindow());
+            CesarScreen cesar = new CesarScreen((Stage) this.getScene().getWindow());
             cesar.show((Stage) this.getScene().getWindow());
         });
 
