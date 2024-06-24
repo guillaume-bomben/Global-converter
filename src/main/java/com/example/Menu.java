@@ -1,83 +1,72 @@
 package com.example;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Menu extends Pane {
+public class Menu extends VBox {
 
     public Menu() {
+        this.setSpacing(20); // Espacement entre les éléments
+        this.setAlignment(Pos.CENTER); // Centrer les éléments verticalement
+        this.setPadding(new Insets(20)); // Padding autour du VBox
         this.display();
     }
 
     public void display() {
-        int buttonWidth = 120; 
-        int buttonHeight = 10;
-        int xAlign = 140;
-
         Label label = new Label("Choose an option:");
-        label.setLayoutX(xAlign);
-        label.setLayoutY(50);
+        label.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
         this.getChildren().add(label);
 
-        Button ASCIIButton = new Button("ASCII");
-        ASCIIButton.setPrefSize(buttonWidth, buttonHeight);
-        ASCIIButton.setLayoutX(xAlign);
-        ASCIIButton.setLayoutY(75);
-        this.getChildren().add(ASCIIButton);
-
-        Button cesarButton = new Button("Cesar");
-        cesarButton.setPrefSize(buttonWidth, buttonHeight);
-        cesarButton.setLayoutX(xAlign);
-        cesarButton.setLayoutY(125);
-        this.getChildren().add(cesarButton);
-
-        Button cesarAndASCIIButton = new Button("Cesar and ASCII");
-        cesarAndASCIIButton.setPrefSize(buttonWidth, buttonHeight);
-        cesarAndASCIIButton.setLayoutX(xAlign);
-        cesarAndASCIIButton.setLayoutY(175);
-        this.getChildren().add(cesarAndASCIIButton);
-
-        Button translatefiles = new Button("Translate files");
-        translatefiles.setPrefSize(buttonWidth, buttonHeight);
-        translatefiles.setLayoutX(xAlign);
-        translatefiles.setLayoutY(215); //modifier pour rendre plus boo
-        this.getChildren().add(translatefiles);
-
-        Button quitButton = new Button("Quit");
-        quitButton.setPrefSize(buttonWidth, buttonHeight);
-        quitButton.setLayoutX(xAlign);
-        quitButton.setLayoutY(245);
-        this.getChildren().add(quitButton);
-
+        Button ASCIIButton = createMenuButton("ASCII");
         ASCIIButton.setOnAction(e -> {
             TranslateScreen translate = new TranslateScreen((Stage) this.getScene().getWindow());
-            translate.show((Stage) this.getScene().getWindow()); 
+            translate.show((Stage) this.getScene().getWindow());
         });
+        this.getChildren().add(ASCIIButton);
+
+        Button cesarButton = createMenuButton("Cesar");
         cesarButton.setOnAction(e -> {
             CesarScreen cesar = new CesarScreen((Stage) this.getScene().getWindow());
             cesar.show((Stage) this.getScene().getWindow());
         });
+        this.getChildren().add(cesarButton);
 
+        Button cesarAndASCIIButton = createMenuButton("Cesar and ASCII");
         cesarAndASCIIButton.setOnAction(e -> {
             CesarAndTranslateScreen cesarAndTranslate = new CesarAndTranslateScreen((Stage) this.getScene().getWindow());
             cesarAndTranslate.show((Stage) this.getScene().getWindow());
         });
+        this.getChildren().add(cesarAndASCIIButton);
 
-        translatefiles.setOnAction(e -> {
+        Button translateFilesButton = createMenuButton("Translate files");
+        translateFilesButton.setOnAction(e -> {
             TranslateFilesScreen translateFiles = new TranslateFilesScreen((Stage) this.getScene().getWindow());
             translateFiles.show((Stage) this.getScene().getWindow());
         });
+        this.getChildren().add(translateFilesButton);
 
+        Button quitButton = createMenuButton("Quit");
         quitButton.setOnAction(e -> {
             System.exit(0);
         });
+        this.getChildren().add(quitButton);
+    }
+
+    private Button createMenuButton(String text) {
+        Button button = new Button(text);
+        button.setPrefWidth(200); // Largeur fixe pour les boutons
+        button.setPrefHeight(40); // Hauteur fixe pour les boutons
+        button.setStyle("-fx-font-size: 14px;");
+        return button;
     }
 
     public void show(Stage primaryStage) {
-        Scene scene = new Scene(this, 400, 300);
+        Scene scene = new Scene(this, 400, 400); // Ajuster la taille de la scène pour une meilleure présentation
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Main Menu");

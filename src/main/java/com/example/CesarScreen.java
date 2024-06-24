@@ -1,5 +1,7 @@
 package com.example;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,90 +9,94 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CesarScreen extends Pane {
-    private Stage primaryStage; 
+public class CesarScreen extends VBox {
+    private Stage primaryStage;
     private Cesar cesar = new Cesar();
-
 
     public CesarScreen(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        this.setSpacing(10); // Espacement entre les éléments
+        this.setAlignment(Pos.CENTER); // Centrage des éléments verticalement
+        this.setPadding(new Insets(20)); // Padding autour du VBox
         this.display();
     }
 
     public void display() {
-        Label text = new Label("Text to encrypt:");
-        text.setLayoutX(10);
-        text.setLayoutY(10);
+
+        Label textLabel = new Label("Text to encrypt:");
+        this.getChildren().add(textLabel);
 
         TextField textField = new TextField();
-        textField.setLayoutX(10);
-        textField.setLayoutY(40);
+        textField.setPrefWidth(300); // Largeur ajustée du champ de texte
+        this.getChildren().add(textField);
 
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll("Encrypt", "Decrypt");
-        comboBox.setLayoutX(10);
-        comboBox.setLayoutY(70);
-
-        Button button = new Button("Encrypt/Decrypt");
-        button.setLayoutX(175);
-        button.setLayoutY(40);
-
-        Label label = new Label("0");
-        label.setLayoutX(10);
-        label.setLayoutY(100);
+        comboBox.setValue("Encrypt"); // Valeur par défaut
+        this.getChildren().add(comboBox);
 
         Slider slider = new Slider();
-        slider.setLayoutX(30);
-        slider.setLayoutY(100);
         slider.setMin(0);
         slider.setMax(25);
         slider.setValue(0);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(5);
+        slider.setMinorTickCount(0);
+        slider.setBlockIncrement(1);
+        this.getChildren().add(slider);
 
-        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            label.setText(String.valueOf(newValue.intValue()));
-        });
+        Label sliderLabel = new Label("Shift amount:");
+        this.getChildren().add(sliderLabel);
 
-        Label result = new Label("Result:");
-        result.setLayoutX(10);
-        result.setLayoutY(130);
+        Label resultLabel = new Label("Result:");
+        this.getChildren().add(resultLabel);
 
         Label resultText = new Label();
-        resultText.setLayoutX(50);
-        resultText.setLayoutY(130);
+        resultText.setWrapText(true); // Permet le retour à la ligne automatique
+        resultText.setMaxWidth(300); // Largeur maximale du texte de résultat
+        resultText.setStyle("-fx-border-color: lightgrey; -fx-padding: 10px;");
+        this.getChildren().add(resultText);
+
+        Button encryptDecryptButton = new Button("Encrypt/Decrypt");
+        this.getChildren().add(encryptDecryptButton);
 
         Button backButton = new Button("Back to Menu");
-        backButton.setLayoutX(300);
-        backButton.setLayoutY(40);
+        this.getChildren().add(backButton);
+
+        encryptDecryptButton.setOnAction(e -> {
+            String mode = comboBox.getValue();
+            String inputText = textField.getText().trim();
+            int shiftAmount = (int) slider.getValue();
+
+            if (inputText.isEmpty()) {
+                showAlert("Error: Please enter some text");
+            } else if (!inputText.matches("[a-zA-Z]+")) {
+                showAlert("Error: Please enter only alphabetic characters");
+            } else {
+                String encryptedText = cesar.Encrypt_And_Decrypt(mode, inputText, shiftAmount);
+                resultText.setText(encryptedText);
+            }
+        });
 
         backButton.setOnAction(e -> {
             Menu menu = new Menu();
-            menu.show(primaryStage); 
-            primaryStage.setScene(menu.getScene()); 
-        });
-
-
-        this.getChildren().addAll(text, textField, button, comboBox, label, slider, result, resultText,backButton);
-
-        button.setOnAction(e -> {
-            if (comboBox.getValue() == null || textField.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Error: Please fill all the fields");
-                alert.showAndWait();
-            } else if (!cesar.isValidInput(textField.getText())) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Error: Please enter only alphabetic characters");
-                alert.showAndWait();
-            } else {
-                resultText.setText(cesar.Encrypt_And_Decrypt(comboBox.getValue(), textField.getText(), slider.valueProperty().intValue()));
-            }
+            menu.show(primaryStage);
+            primaryStage.setScene(menu.getScene());
         });
     }
 
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     public void show(Stage primaryStage) {
-        Scene scene = new Scene(this, 400, 300);
+        Scene scene = new Scene(this, 400, 400); // Ajustement de la taille de la scène
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Encryption Cesar Cipher");

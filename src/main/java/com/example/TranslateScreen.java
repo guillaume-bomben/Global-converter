@@ -1,14 +1,18 @@
 package com.example;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class TranslateScreen extends FlowPane{
+public class TranslateScreen extends FlowPane {
     private Stage primaryStage;
     private Translate translate = new Translate();
 
@@ -18,77 +22,81 @@ public class TranslateScreen extends FlowPane{
     }
 
     public void show(Stage primaryStage) {
-        Scene scene = new Scene(this, 400, 300);
+        Scene scene = new Scene(this, 500, 400); // Adjusted size for better layout
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Encryption Cesar Cipher");
         primaryStage.show();
     }
 
-    public void display(){
-        Label label = new Label("Sentence to translate :");
-        this.getChildren().add(label);        
-        label.setStyle("-fx-padding: 0 10 0 0;");
+    public void display() {
+        VBox mainBox = new VBox(10); // Vertical box to hold all components with spacing
+        mainBox.setPadding(new Insets(20)); // Padding around the main VBox
 
-        TextField text = new TextField("nom");
-        this.getChildren().add(text);
 
-        Label cheat = new Label("");
-        this.getChildren().add(cheat);        
-        cheat.setStyle("-fx-padding: 15px;");
+        HBox inputBox = new HBox(10); // Horizontal box for input components
+        inputBox.setAlignment(Pos.CENTER_LEFT);
 
-        Button button = new Button("Translate");
-        this.getChildren().add(button);
+        Label inputLabel = new Label("Sentence to translate:");
+        inputLabel.setStyle("-fx-font-weight: bold;");
+        inputBox.getChildren().add(inputLabel);
 
-        Label inputLabel = new Label("Input mode :");
-        this.getChildren().add(inputLabel);        
-        inputLabel.setStyle("-fx-padding: 0 10 0 0;");
+        TextField textField = new TextField("nom");
+        textField.setPrefWidth(200); // Adjusted width of text field
+        inputBox.getChildren().add(textField);
 
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
-        choiceBox.setValue("Text");
-        this.getChildren().add(choiceBox);
+        ChoiceBox<String> inputModeBox = new ChoiceBox<>();
+        inputModeBox.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
+        inputModeBox.setValue("Text");
+        inputBox.getChildren().add(inputModeBox);
 
-        Label cheat2 = new Label("");
-        this.getChildren().add(cheat2);        
-        cheat2.setStyle("-fx-padding: 0 200 0 0;");
+        mainBox.getChildren().add(inputBox);
 
-        Label translateLabel = new Label("Translate mode :");
-        this.getChildren().add(translateLabel);        
-        translateLabel.setStyle("-fx-padding: 0 10 0 0;");
+        HBox translateBox = new HBox(10); // Horizontal box for translate components
+        translateBox.setAlignment(Pos.CENTER_LEFT);
 
-        ChoiceBox<String> choiceBox2 = new ChoiceBox<>();
-        choiceBox2.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
-        choiceBox2.setValue("Text");
-        this.getChildren().add(choiceBox2);
+        Label translateLabel = new Label("Translate mode:");
+        translateLabel.setStyle("-fx-font-weight: bold;");
+        translateBox.getChildren().add(translateLabel);
 
-        Label cheat3 = new Label("");
-        this.getChildren().add(cheat3);        
-        cheat3.setStyle("-fx-padding: 0 180 0 0;");
+        ChoiceBox<String> translateModeBox = new ChoiceBox<>();
+        translateModeBox.getItems().addAll("Text", "Hexadecimal", "Decimal", "Octal", "Binary");
+        translateModeBox.setValue("Text");
+        translateBox.getChildren().add(translateModeBox);
 
-        Label answer = new Label("sdfgzedrf");
-        this.getChildren().add(answer);        
-        answer.setStyle("-fx-top: 60vh;");
+        mainBox.getChildren().add(translateBox);
+
+        Button translateButton = new Button("Translate");
+        translateButton.setStyle("-fx-font-size: 14px;");
+        mainBox.getChildren().add(translateButton);
+
+        Label answerLabel = new Label("Translation:");
+        answerLabel.setStyle("-fx-font-weight: bold;");
+        mainBox.getChildren().add(answerLabel);
+
+        Label answer = new Label("");
+        answer.setStyle("-fx-border-color: lightgrey; -fx-padding: 10px; -fx-font-size: 16px;");
+        mainBox.getChildren().add(answer);
+
+        translateButton.setOnAction(event -> {
+            String translatedText = translate.textTranslate(textField.getText(), inputModeBox.getValue(), translateModeBox.getValue());
+            if (!translatedText.equals("&")) {
+                answer.setText(translatedText);
+            } else {
+                answer.setText("Error: input doesn't match mode selected");
+            }
+        });
 
         Button backButton = new Button("Back to Menu");
-        this.getChildren().add(backButton);
-        backButton.setStyle("-fx-padding: 0 0 0 10;");
+        backButton.setStyle("-fx-font-size: 14px;");
+        mainBox.getChildren().add(backButton);
 
         backButton.setOnAction(e -> {
             Menu menu = new Menu();
-            menu.show(primaryStage); 
-            primaryStage.setScene(menu.getScene()); 
+            menu.show(primaryStage);
+            primaryStage.setScene(menu.getScene());
         });
 
-        button.setOnAction(event -> {
-            String translatedText = translate.textTranslate(text.getText(), choiceBox.getValue(), choiceBox2.getValue());
-            if (translatedText != "&"){
-                answer.setText(translatedText);
-            }
-            else if (translatedText == "&"){
-                answer.setText("Error : input doesn't match mode selected");
-            }
-        });
-        
+        this.getChildren().add(mainBox);
     }
 }
