@@ -22,7 +22,7 @@ public class TranslateScreen extends FlowPane {
     }
 
     public void show(Stage primaryStage) {
-        Scene scene = new Scene(this, 500, 400); // Adjusted size for better layout
+        Scene scene = new Scene(this, 500, 300); // Adjusted size for better layout
         primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Encryption Cesar Cipher");
