@@ -49,7 +49,10 @@ public class CesarScreen extends VBox {
         slider.setBlockIncrement(1);
         this.getChildren().add(slider);
 
-        Label sliderLabel = new Label("Shift amount:");
+        Label sliderLabel = new Label("Shift amount:" + (int) slider.getValue());
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            sliderLabel.setText("Shift amount:" + (int) slider.getValue());
+        });
         this.getChildren().add(sliderLabel);
 
         Label resultLabel = new Label("Result:");

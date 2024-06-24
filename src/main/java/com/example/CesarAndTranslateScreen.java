@@ -45,8 +45,13 @@ public class CesarAndTranslateScreen extends VBox {
         slider.setMinorTickCount(0);
         slider.setBlockIncrement(1);
         this.getChildren().add(slider);
+        
 
-        Label sliderLabel = new Label("Cesar Shift:");
+
+        Label sliderLabel = new Label("Cesar Shift:"+ (int) slider.getValue());
+        slider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            sliderLabel.setText("Cesar Shift:" + (int) slider.getValue());
+        });
         this.getChildren().add(sliderLabel);
 
         // Options for ChoiceBoxes
