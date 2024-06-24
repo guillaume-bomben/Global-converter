@@ -40,10 +40,16 @@ public class Menu extends Pane {
         cesarAndASCIIButton.setLayoutY(175);
         this.getChildren().add(cesarAndASCIIButton);
 
+        Button translatefiles = new Button("Translate files");
+        translatefiles.setPrefSize(buttonWidth, buttonHeight);
+        translatefiles.setLayoutX(xAlign);
+        translatefiles.setLayoutY(215); //modifier pour rendre plus boo
+        this.getChildren().add(translatefiles);
+
         Button quitButton = new Button("Quit");
         quitButton.setPrefSize(buttonWidth, buttonHeight);
         quitButton.setLayoutX(xAlign);
-        quitButton.setLayoutY(225);
+        quitButton.setLayoutY(245);
         this.getChildren().add(quitButton);
 
         ASCIIButton.setOnAction(e -> {
@@ -58,6 +64,11 @@ public class Menu extends Pane {
         cesarAndASCIIButton.setOnAction(e -> {
             CesarAndTranslateScreen cesarAndTranslate = new CesarAndTranslateScreen((Stage) this.getScene().getWindow());
             cesarAndTranslate.show((Stage) this.getScene().getWindow());
+        });
+
+        translatefiles.setOnAction(e -> {
+            TranslateFilesScreen translateFiles = new TranslateFilesScreen((Stage) this.getScene().getWindow());
+            translateFiles.show((Stage) this.getScene().getWindow());
         });
 
         quitButton.setOnAction(e -> {
